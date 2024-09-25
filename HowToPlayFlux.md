@@ -24,8 +24,8 @@
 下载Lora模型时需要确定该Lora模型是FLUX模型，
 筛选Lora模型时，标签里带有`F.1`即为FLUX模型，或者`Flux .1 S` \ `Flux .1 D`这样的标签
 > 注意：这里的`S`和`D`指的是FLUX的版本，`S`为schnell(简化版)，`D`为dev(普通版)，还有个`pro`版本，只能调用API使用
-
-> 用dev nf4版本就行
+> 
+> 一般都是用dev版本，schnell质量很差
 - 国内下载地址：https://www.liblib.art/
 - 国外下载地址：https://civitai.com/models
 
@@ -49,6 +49,7 @@
 
 ### 必备sd-webUI插件
 为了方便使用，推荐安装以下插件：
+
 0. 中文汉化语言包：https://github.com/hanamizuki-ai/stable-diffusion-webui-localization-zh_Hans
 1. prompt翻译，输入中文自动填入英文：https://github.com/Physton/sd-webui-prompt-all-in-one
 2. tag逆推，将图片逆推为tag：https://github.com/toriato/stable-diffusion-webui-wd14-tagger
