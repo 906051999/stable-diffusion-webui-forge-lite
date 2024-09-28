@@ -14,6 +14,7 @@ import SeedSelector from '../components/SeedSelector';
 
 export default function Home() {
   const [state, setState] = useState({
+    model: "flux1-dev-bnb-nf4-v2",
     prompt: '',
     resolution: '16:9',
     iterations: 20,
@@ -67,17 +68,21 @@ export default function Home() {
       case 'txt2img':
         return (
           <>
-            <ProgramControl
-              {...state}
-              onGenerate={handleGenerate}
-              onSkip={handleSkip}
-            />
+            <div className="mb-4 p-3 bg-gray-100 rounded-lg shadow-sm">
+              <span className="font-semibold text-gray-700">当前模型：</span>
+              <span className="text-blue-600">{state.model || '未选择'}</span>
+            </div>
             <PromptInput value={state.prompt} onChange={(e) => updateState('prompt', e.target.value)} />
             <LoraModelSelector models={state.loras} onSelect={(model) => updateState('prompt', `${state.prompt} ${model.tag}`)} />
             <div className="flex flex-wrap gap-4">
               <ResolutionSelector value={state.resolution} onChange={(e) => updateState('resolution', e.target.value)} />
               <IterationSelector value={state.iterations} onChange={(e) => updateState('iterations', e.target.value)} />
               <SeedSelector seed={state.seed} setSeed={(value) => updateState('seed', value)} />
+              <ProgramControl
+              {...state}
+              onGenerate={handleGenerate}
+              onSkip={handleSkip}
+            />
             </div>
           </>
         );

@@ -23,73 +23,78 @@ const ImageGallery = ({ images, onImageClick }) => {
 
   // 预设图片
   const presetImages = [
-    { id: 'preset1', src: '/images/test.png', alt: '预设图片1', ratio: '16:9', createdAt: '2023-06-01 10:30:45' },
-    { id: 'preset2', src: '/images/test.png', alt: '预设图片2', ratio: '4:3', createdAt: '2023-06-02 15:20:30' },
-    { id: 'preset3', src: '/images/test.png', alt: '预设图片3', ratio: '1:1', createdAt: '2023-06-03 09:45:15' },
-    { id: 'preset4', src: '/images/test.png', alt: '预设图片4', ratio: '1:1', createdAt: '2023-06-03 11:22:33' },
-    { id: 'preset5', src: '/images/test.png', alt: '预设图片5', ratio: '1:1', createdAt: '2023-06-03 14:05:50' },
-    { id: 'preset6', src: '/images/test.png', alt: '预设图片6', ratio: '1:1', createdAt: '2023-06-03 16:40:12' },
-    { id: 'preset7', src: '/images/test.png', alt: '预设图片7', ratio: '1:1', createdAt: '2023-06-03 18:55:28' },
-    { id: 'preset8', src: '/images/test.png', alt: '预设图片8', ratio: '1:1', createdAt: '2023-06-03 20:10:05' },
-    { id: 'preset9', src: '/images/test.png', alt: '预设图片9', ratio: '1:1', createdAt: '2023-06-03 22:30:40' },
-    { id: 'preset10', src: '/images/test.png', alt: '预设图片10', ratio: '1:1', createdAt: '2023-06-04 01:15:55' },
-    { id: 'preset11', src: '/images/test.png', alt: '预设图片11', ratio: '1:1', createdAt: '2023-06-04 03:40:20' },
+    { id: 'preset1', src: '/images/test.png', alt: '预设图片1', createdAt: '2023-06-01 10:30:45', prompt: 'sleeping blue hair girl in a cozy sweater laying on floor surrounded by a sleeping cat,viewed from above,long flowing hair, ,casting shadows style' },
   ];
 
   const allImages = [...presetImages, ...images];
 
   return (
-    <>
-      <div className="h-[calc(100vh-200px)] overflow-y-auto">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">
-          {allImages.map((image) => (
-            <div key={image.id || image.src} className="relative cursor-pointer" onClick={() => handleImageClick(image)}>
+    <div className="h-[calc(100vh-200px)] flex flex-col">
+      <div className="flex-grow overflow-y-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 p-4">
+          {allImages.map((image, index) => (
+            <div 
+              key={image.id || image.src} 
+              className="relative cursor-pointer group overflow-hidden rounded-lg shadow-md transition duration-300 transform hover:scale-105"
+              onClick={() => handleImageClick(image)}
+            >
               <img
                 src={image.src}
                 alt={image.alt}
-                className="w-full h-48 object-cover rounded hover:opacity-75 transition"
+                className="w-full h-40 object-cover transition duration-300 group-hover:opacity-75"
               />
-              {image.ratio && image.createdAt && (
-                <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2 text-xs">
-                  <p>{image.ratio}</p>
-                  <p>{image.createdAt}</p>
-                </div>
-              )}
+              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-opacity duration-300 flex items-center justify-center">
+                <p className="text-white text-lg font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  查看详情
+                </p>
+              </div>
+              <div className="absolute top-2 right-2 bg-gradient-to-r from-gray-200 to-gray-300 text-gray-700 w-6 h-6 flex items-center justify-center text-xs font-semibold rounded-full shadow-sm transition-all duration-200 hover:scale-105 opacity-80 hover:opacity-100">
+                {index + 1}
+              </div>
             </div>
           ))}
         </div>
       </div>
       {selectedImage && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center z-50">
-          <div className="max-w-3xl w-full">
-          <img src={selectedImage.src} alt={selectedImage.alt} className="max-w-full max-h-[80vh] object-contain" />
-            <div className="flex justify-between items-center bg-black bg-opacity-50 text-white p-2 mb-2">
-              {selectedImage.ratio && selectedImage.createdAt && (
-                <div>
-                  <p className="text-sm">比例: {selectedImage.ratio}</p>
-                  <p className="text-sm">创建时间: {selectedImage.createdAt}</p>
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 flex flex-col max-h-[90vh]">
+            <div className="p-4 border-b overflow-y-auto">
+              {selectedImage.prompt && (
+                <div className="text-sm text-gray-600">
+                  <span className="font-semibold">Prompt:</span>
+                  <p className="mt-1 whitespace-pre-wrap select-text">{selectedImage.prompt}</p>
                 </div>
               )}
-              <div className="flex items-center">
-                <button onClick={downloadImage} className="text-white bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-75 transition mr-2">
-                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            </div>
+            <div className="flex-grow p-4 overflow-y-auto flex items-center justify-center">
+              <img src={selectedImage.src} alt={selectedImage.alt} className="max-w-full max-h-full object-contain" />
+            </div>
+            <div className="flex justify-between items-center p-4 border-t">
+              {selectedImage.alt && selectedImage.createdAt && (
+                <div className="flex-grow">
+                  <p className="text-sm text-gray-600 truncate">名称: <span className="font-semibold">{selectedImage.alt}</span></p>
+                  <p className="text-sm text-gray-600">创建时间: <span className="font-semibold">{selectedImage.createdAt}</span></p>
+                </div>
+              )}
+              <div className="flex items-center space-x-2 flex-shrink-0">
+                <button onClick={downloadImage} className="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-2 transition duration-300">
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                     <polyline points="7 10 12 15 17 10"></polyline>
                     <line x1="12" y1="15" x2="12" y2="3"></line>
                   </svg>
                 </button>
-                <button onClick={closeModal} className="text-white bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-75 transition">
-                  <svg className="w-6 h-6" viewBox="0 0 24 24">
+                <button onClick={closeModal} className="bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-full p-2 transition duration-300">
+                  <svg className="w-5 h-5" viewBox="0 0 24 24">
                     <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
               </div>
             </div>
-       
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

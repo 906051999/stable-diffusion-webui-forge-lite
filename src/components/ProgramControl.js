@@ -30,31 +30,31 @@ const ProgramControl = ({ prompt, resolution, iterations, seed, onGenerate, onSk
   };
 
   return (
-    <div className="flex flex-col items-center space-y-4">
-      {!isGenerating ? (
-        <button
-          onClick={handleGenerate}
-          className="w-full sm:w-auto px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-300 shadow-md"
-        >
-          生成
-        </button>
-      ) : (
-        <div className="w-full space-y-4">
-          <div className="w-full bg-gray-200 rounded-full h-6 overflow-hidden shadow-inner">
-            <div
-              className="bg-blue-500 h-full rounded-full transition-all duration-300 ease-in-out flex items-center justify-center text-xs font-semibold text-white"
-              style={{ width: `${progress}%` }}
-            >
-              {progress}%
-            </div>
-          </div>
-          <button
-            onClick={handleSkip}
-            className="w-full sm:w-auto px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors duration-300 shadow-md"
-          >
-            跳过
-          </button>
+    <div className="flex items-center space-x-4 w-full max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
+      <button
+        onClick={handleGenerate}
+        className="flex-grow px-8 py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-lg text-lg font-semibold relative overflow-hidden"
+        disabled={isGenerating}
+      >
+        <div className="relative z-10">
+          {isGenerating ? `生成中... ${progress}%` : '生成'}
         </div>
+        {isGenerating && (
+          <div 
+            className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 transition-all duration-300 ease-out"
+            style={{ width: `${progress}%` }}
+          >
+            <div className="absolute inset-0 bg-white opacity-20 animate-pulse"></div>
+          </div>
+        )}
+      </button>
+      {isGenerating && (
+        <button
+          onClick={handleSkip}
+          className="px-8 py-4 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-300 shadow-lg text-lg font-semibold"
+        >
+          跳过
+        </button>
       )}
     </div>
   );
